@@ -23,7 +23,7 @@ jobs:
         azcliversion: 2.0.72
         inlineScript: |
           az account show
-    - name: Checkout
+    - name: Checkout      
       uses: actions/checkout@v3
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1

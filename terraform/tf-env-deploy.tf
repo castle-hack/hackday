@@ -1,35 +1,35 @@
 terraform {
-    required_providers {
-      azurerm = {
-        source = "hashicorp/azurerm"
-        version = "= 3.21.1"
-      }
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "= 3.21.1"
     }
+  }
 }
 
 provider "azurerm" {
-    features {}
+  features {}
 }
-    
+
 ### Reference Hackday 2023
 resource "azurerm_resource_group" "hackday_rg" {
-    name      = var.resource_group_name
-    location  = var.location
+  name     = var.resource_group_name
+  location = var.location
 }
 
 
-resource "azurerm_spring_cloud_service" "hackday_springservice"{
-  name =  "${var.userid}_springservice"
+resource "azurerm_spring_cloud_service" "hackday_springservice" {
+  name                = "${var.userid}_springservice"
   resource_group_name = azurerm_resource_group.hackday_rg.name
-  location = azurerm_resource_group.hackday_rg.location
-  depends_on = [azurerm_resource_group.hackday_rg]
+  location            = azurerm_resource_group.hackday_rg.location
+  depends_on          = [azurerm_resource_group.hackday_rg]
 }
 
 resource "azurerm_spring_cloud_app" "hackday_springapp" {
-  name = "${var.userid}_springapp"
+  name                = "${var.userid}_springapp"
   resource_group_name = azurerm_resource_group.hackday_rg.name
-  location = azurerm_resource_group.hackday_rg.location
-  depends_on = [azurerm_resource_group.hackday_rg]
+  location            = azurerm_resource_group.hackday_rg.location
+  depends_on          = [azurerm_resource_group.hackday_rg]
 
 }
 
