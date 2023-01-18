@@ -1,0 +1,9 @@
+spring.profiles.active: dev
+spring.application.name: "spring-config-client"
+
+spring.config.import: "configserver:http://localhost:8888"
+
+management.endpoints.web.exposure.include: "*"
+
+endpoints.env.keys-to-sanitize: "password,secret"
+management.endpoint.env.show-values: "ALWAYS"
