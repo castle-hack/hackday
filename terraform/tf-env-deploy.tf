@@ -13,23 +13,22 @@ provider "azurerm" {
 }
 
 ### Reference Hackday 2023
-resource "azurerm_resource_group" "hackday_rg" {
-  name     = var.resource_group_name
-  location = var.location
+data "azurerm_resource_group" "hackday_rg" {
+  name = var.resource_group_name
 }
 
 resource "azurerm_spring_cloud_service" "hackday_springservice" {
   name                = "${var.userid}-springservice"
-  resource_group_name = azurerm_resource_group.hackday_rg.name
-  location            = azurerm_resource_group.hackday_rg.location
-  depends_on          = [azurerm_resource_group.hackday_rg]
+  resource_group_name = data.azurerm_resource_group.hackday_rg.name
+  location            = data.azurerm_resource_group.hackday_rg.location
+  depends_on          = [data.azurerm_resource_group.hackday_rg]
 }
 
 resource "azurerm_spring_cloud_app" "hackday_springapp" {
   name                = "${var.userid}-springapp"
-  resource_group_name = azurerm_resource_group.hackday_rg.name
+  resource_group_name = data.azurerm_resource_group.hackday_rg.name
   service_name        = azurerm_spring_cloud_service.hackday_springservice.name
-  depends_on          = [azurerm_resource_group.hackday_rg]
+  depends_on          = [data.azurerm_resource_group.hackday_rg]
 
 }
 
@@ -37,11 +36,11 @@ resource "azurerm_spring_cloud_app" "hackday_springapp" {
 ### Create Application Insights
 resource "azurerm_application_insights" "hackday_common_insights" {
     name                = var.app_insights_name
-    location            = azurerm_resource_group.hackday_rg.location
-    resource_group_name = azurerm_resource_group.hackday_rg.name
+    location            = data.azurerm_resource_group.hackday_rg.location
+    resource_group_name = data.azurerm_resource_group.hackday_rg.name
     application_type    = "web"
     workspace_id        = "/subscriptions/${var.subscription}/resourceGroups/${var.vnetrg}/providers/Microsoft.OperationalInsights/workspaces/${var.sc_law_id}"
-    depends_on = [azurerm_resource_group.hackday_rg]
+    depends_on = [data.azurerm_resource_group.hackday_rg]
 }
     
 ### Create Spring Cloud Service
