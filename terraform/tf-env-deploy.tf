@@ -1,35 +1,35 @@
 terraform {
-    required_providers {
-      azurerm = {
-        source = "hashicorp/azurerm"
-        version = "= 3.21.1"
-      }
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "= 3.21.1"
     }
+  }
 }
 
 provider "azurerm" {
-    features {}
+  skip_provider_registration = "true"
+  features {}
 }
-    
+
 ### Reference Hackday 2023
 resource "azurerm_resource_group" "hackday_rg" {
-    name      = var.resource_group_name
-    location  = var.location
+  name     = var.resource_group_name
+  location = var.location
 }
 
-
-resource "azurerm_spring_cloud_service" "hackday_springservice"{
-  name =  "${var.userid}_springservice"
+resource "azurerm_spring_cloud_service" "hackday_springservice" {
+  name                = "${var.userid}-springservice"
   resource_group_name = azurerm_resource_group.hackday_rg.name
-  location = azurerm_resource_group.hackday_rg.location
-  depends_on = [azurerm_resource_group.hackday_rg]
+  location            = azurerm_resource_group.hackday_rg.location
+  depends_on          = [azurerm_resource_group.hackday_rg]
 }
 
 resource "azurerm_spring_cloud_app" "hackday_springapp" {
-  name = "${var.userid}_springapp"
+  name                = "${var.userid}-springapp"
   resource_group_name = azurerm_resource_group.hackday_rg.name
-  location = azurerm_resource_group.hackday_rg.location
-  depends_on = [azurerm_resource_group.hackday_rg]
+  service_name        = azurerm_spring_cloud_service.hackday_springservice.name
+  depends_on          = [azurerm_resource_group.hackday_rg]
 
 }
 
@@ -51,7 +51,7 @@ resource "azurerm_application_insights" "hackday_common_insights" {
     location            = var.location
     sku_name            = "S0"
     
-    network {
+    network {ß
     app_subnet_id                   = "/subscriptions/${var.subscription}/resourceGroups/${var.azurespringappvnetrg/providers/Microsoft.Network/virtualNetworks/${var.vnet_spoke_name}/subnets/${var.app_subnet_id}"
     service_runtime_subnet_id       = "/subscriptions/${var.subscription}/resourceGroups/${var.azurespringappvnetrg}/providers/Microsoft.Network/virtualNetworks/${var.vnet_spoke_name}/subnets/${var.service_runtime_subnet_id}"
     cidr_ranges                     = var.sc_cidr
