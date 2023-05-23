@@ -1,3 +1,3 @@
-resource_group_name = "hackday-jan-2023"
-location            = "US Eastern2"
+resource_group_name = "hackday-may-2023"
+location            = "centralindia"
 userid              = "wukir"

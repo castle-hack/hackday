@@ -28,7 +28,7 @@ resource "azurerm_spring_cloud_service" "hackday_springservice" {
 resource "azurerm_spring_cloud_app" "hackday_springapp" {
   name                = "${var.userid}_springapp"
   resource_group_name = azurerm_resource_group.hackday_rg.name
-  location            = azurerm_resource_group.hackday_rg.location
+  service_name        = azurerm_spring_cloud_service.hackday_springservice.name
   depends_on          = [azurerm_resource_group.hackday_rg]
 
 }
